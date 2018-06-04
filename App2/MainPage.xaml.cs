@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.ServiceModel.Channels;
 using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,6 +27,8 @@ namespace App2
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private StorageFolder _selectedFolder;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -85,17 +89,15 @@ namespace App2
             FileGridView.Items.Clear();
 
             if (!(node.Content is DirectoryModel model)) return;
-            var folder = await StorageFolder.GetFolderFromPathAsync(model.Path);
-
-            var files = await folder.GetFilesAsync();
+            _selectedFolder = await StorageFolder.GetFolderFromPathAsync(model.Path);
+            if (_selectedFolder == null) return;
+            var files = await _selectedFolder.GetFilesAsync();
             if (files == null || files.Any() == false) return;
             foreach (var file in files)
             {
                 FileGridView.Items.Add(file.Name);
             }
-
-            GetSubDirectories(folder, node);
-            Debug.WriteLine("DirectoryTreeView_ItemInvoked");
+            GetSubDirectories(_selectedFolder, node);
         }
 
         //private IList<string> GetListFromNode(TreeViewNode node)
@@ -115,5 +117,48 @@ namespace App2
         //    };
         //    return list;
         //}
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var button = (Button) sender;
+            switch (button.Content)
+            {
+                case "Create":
+                    CreateFileInSelectedFolder();
+                    break;
+                case "Open":
+                    OpenFile();
+                    break;
+            }
+        }
+
+        private async void OpenFile()
+        {
+            if (_selectedFolder == null) return;
+            try
+            {
+                var file = await _selectedFolder.GetFileAsync("TextFile.tmp");
+                if (file == null) return;
+                var msg = new MessageDialog("Successful opening operation");
+                await msg.ShowAsync();
+            }
+            catch (FileNotFoundException ffe)
+            {
+                var msg = new MessageDialog(ffe.Message);
+                await msg.ShowAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private async void CreateFileInSelectedFolder()
+        {
+            if (_selectedFolder == null) return;
+            var file = await _selectedFolder.CreateFileAsync("TextFile.tmp", CreationCollisionOption.OpenIfExists);
+            if (file == null) return;
+            var msg = new MessageDialog("Successful creation or opening operation");
+            await msg.ShowAsync();
+        }
     }
 }

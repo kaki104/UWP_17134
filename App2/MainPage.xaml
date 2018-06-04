@@ -50,13 +50,17 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30*"/>
-            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="60*"/>
         </Grid.ColumnDefinitions>
         
-        <TextBlock Grid.ColumnSpan="2" Text="Kaki104 File Explorer" Style="{StaticResource HeaderTextBlockStyle}" Margin="20 10 10 10"/>
-        <TreeView x:Name="DirectoryTreeView" Grid.Row="1" Grid.Column="0" ItemInvoked="DirectoryTreeView_ItemInvoked" 
-                  >
+        <TextBlock Text="Kaki104 File Explorer" Style="{StaticResource HeaderTextBlockStyle}" Margin="20 10 10 10" d:IsHidden="True"/>
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Create" Click="ButtonBase_OnClick"/>
+            <Button Content="Open" Click="ButtonBase_OnClick"/>
+        </StackPanel>
+        <TreeView x:Name="DirectoryTreeView" Grid.Row="1" Grid.Column="0" 
+                  ItemInvoked="DirectoryTreeView_ItemInvoked">
             
         </TreeView>
         <GridView x:Name="FileGridView" Grid.Column="1" Grid.Row="1"
