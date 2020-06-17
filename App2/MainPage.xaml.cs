@@ -37,21 +37,35 @@ namespace App2
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             if (DesignMode.DesignMode2Enabled) return;
-
-            var rootFolder = await StorageFolder.GetFolderFromPathAsync(@"c:\");
-            if (rootFolder == null) return;
-
-            var folderNode = new TreeViewNode
+            try
             {
-                Content = new DirectoryModel
+                var rootFolder = await StorageFolder.GetFolderFromPathAsync(@"C:\");
+                if (rootFolder == null) return;
+                var folderNode = new TreeViewNode
                 {
-                    Name = rootFolder.Name,
-                    Path = rootFolder.Path,
-                    HasSubDirectory = true
-                }
-            };
-            GetSubDirectories(rootFolder,folderNode);
-            DirectoryTreeView.RootNodes.Add(folderNode);
+                    Content = new DirectoryModel
+                    {
+                        Name = rootFolder.Name,
+                        Path = rootFolder.Path,
+                        HasSubDirectory = true
+                    }
+                };
+                GetSubDirectories(rootFolder, folderNode);
+                DirectoryTreeView.RootNodes.Add(folderNode);
+            }
+            catch (UnauthorizedAccessException uae)
+            {
+                //https://docs.microsoft.com/en-us/windows/uwp/files/file-access-permissions
+                //https://docs.microsoft.com/en-us/windows/uwp/launch-resume/launch-settings-app
+                var message = new MessageDialog("Please allow the app to access all file systems.");
+                _ = await message.ShowAsync();
+                _ = await Windows.System.Launcher.LaunchUriAsync(new Uri("ms-settings:privacy-broadfilesystemaccess"));
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
         }
 
         private async void GetSubDirectories(StorageFolder folder, TreeViewNode folderNode, int depth = 0)
