@@ -17,7 +17,7 @@
   <mp:PhoneIdentity PhoneProductId="64fb043a-f49d-463c-8c19-a68e5f3b250e" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>App2</DisplayName>
+    <DisplayName>File Explorer</DisplayName>
     <PublisherDisplayName>MunChan Park</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -33,12 +33,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="App2.App">
+      EntryPoint="BroadFileSystemAccess.App">
       <uap:VisualElements
-        DisplayName="App2"
+        DisplayName="BroadFileSystemAccess"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="App2"
+        Description="BroadFileSystemAccess"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

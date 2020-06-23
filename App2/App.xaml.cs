@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace App2
+namespace BroadFileSystemAccess
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
@@ -29,7 +29,13 @@ namespace App2
         public App()
         {
             this.InitializeComponent();
+            this.UnhandledException += App_UnhandledException;
             this.Suspending += OnSuspending;
+        }
+
+        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            
         }
 
         /// <summary>
