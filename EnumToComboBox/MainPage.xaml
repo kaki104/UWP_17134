@@ -1,0 +1,19 @@
+﻿<Page
+    x:Class="EnumToComboBox.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:EnumToComboBox"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ComboBox x:Name="StatusCombo" MinWidth="150"
+                  ItemsSource="{Binding Source={local:EnumBindingSourceExtension EnumType=local:Status}}"/>
+            <TextBlock Text="{Binding ElementName=StatusCombo, Path=SelectedItem}"/>
+            <TextBlock Text="{Binding ElementName=StatusCombo, Path=SelectedIndex}"/>
+        </StackPanel>
+    </Grid>
+</Page>
